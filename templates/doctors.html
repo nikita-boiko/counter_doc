@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table {{ speciality }}</title>
+</head>
+<body>
+    <!-- Получаем объекты из БД -->
+    <h1>Свободные талоны: {{speciality}}</h1>
+    <table id="doctorTable">
+        <thead>
+            <tr>
+                <th>Специальность</th>
+                <th>ФИО</th>
+                <th>Дата и время приема</th>
+                <th>Свободно</th>
+                <th>Пациент</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Запускаем цикл который выдает отдельные столбцы таблицы -->
+            {% for row in data %}
+            <tr>
+                <td>{{row.speciality}}</td>
+                <td>{{row.name}}</td>
+                <td>{{row.date_record}}</td>
+                <td>{{row.record}}</td>
+                <td>{{row.patient}}</td>
+            </tr>
+            {% endfor %}
+             
+        </tbody>
+    </table>
+    <p>
+  
+    </p>
+
+   <table>
+        <tr>
+            <th>Всего талонов</th>
+            <th>Свободных талонов</th>
+            <th>Процент свободных талонов</th>
+        </tr>
+        <tr class="total-row">
+                <td id="totalSlots"></td>
+                <td id="totalFree"></td>
+                <td id="percentFree"></td>
+            </tr>
+    </table>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.getElementById('doctorTable');
+            const rows = table.querySelectorAll('tbody tr:not(.total-row)');
+            
+            let totalFree = 0;
+            
+            rows.forEach(row => {
+                const cells = row.cells;
+                
+                const isFree = cells[3].textContent.toLowerCase() === 'true';
+                if (isFree) {
+                    totalFree++;
+                }
+            });
+            const totalSlots = table.rows.length - 1;
+            const percentFree = totalSlots > 0 ? (totalFree / totalSlots * 100).toFixed(1) : 0;
+            
+            document.getElementById('totalSlots').textContent = totalSlots;
+            document.getElementById('totalFree').textContent = totalFree;
+            document.getElementById('percentFree').textContent = percentFree + '%';
+        });
+    </script>
+
+    
+    </div>
+</body>
+</html>

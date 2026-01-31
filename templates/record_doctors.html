@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <style>
+        td {padding:5px;}
+        button{margin: 5px;}
+    </style>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table {{ speciality }}</title>
+</head>
+<body>
+    <form id="recordForm">
+    
+    <h1>Запись на прием: {{speciality}}</h1>
+    <table>
+    <tr>
+        <th>Записаться</th>
+    </tr>
+    </table>
+    <div class="form-group">
+        <label for="doctor">Выберите талон для записи:</label>
+        <select id="doctor"> 
+            {% for row in data %}
+                {% if row.record == true %}
+            <option value="{{row.name}}|{{row.date_record}}">{{row.name}} {{row.date_record}}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">    
+        <label for="record"></label>
+            <input type="hidden" id="record" value='false'>
+    </div>
+
+
+    <div class="form-group">
+            <label for="patient">ФИО пациента:</label>
+            <input type="text" id="patient" required>
+    </div>
+    <button type="submit">Отправить</button>
+    </form>
+    <script>
+           document.getElementById('recordForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const selectedValue = document.getElementById('doctor').value;
+            const [name, date_record] = selectedValue.split('|');
+
+            const formData = {
+                name: name,
+                date_record: date_record,
+                record: document.getElementById('record').value === 'true',
+                patient: document.getElementById('patient').value
+            };
+            
+            try {
+                const response = await fetch('/record', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Ошибка сервера');
+                }
+                
+                const result = await response.json();
+                console.log('Успешно:', result);
+                alert('Данные отправлены!');
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при отправке');
+            }
+        });
+    </script>
+</body>
+</html>

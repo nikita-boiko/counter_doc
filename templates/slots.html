@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+ <title>Добавление талонов для записи</title>
+</head>
+<body>
+    <form id="SlotsForm">
+        <div class="form-group">
+            <label for="speciality">Специальность:</label>
+            <select id="speciality"> 
+                <option value="врач-терапевт участковый">врач-терапевт участковый</option>
+                <option value="врач-педиатр участковый">врач-педиатр участковый</option>
+                <option value="врач общей практики (семейный врач)">врач общей практики (семейный врач)</option>
+                <option value="врач-оториноларинголог">врач-оториноларинголог</option>
+                <option value="врач-офтальмолог">врач-офтальмолог</option>
+                <option value="врач-акушер-гинеколог">врач-акушер-гинеколог</option>
+                <option value="врач-хирург">врач-хирург</option>
+                <option value="врач - детский хирург">врач - детский хирург</option>
+                <option value="врач-психиатр-нарколог">врач-психиатр-нарколог</option>
+                <option value="врач-психиатр детский">врач-психиатр детский</option>
+                <option value="врач-стоматолог">врач-стоматолог</option>
+                <option value="врач-стоматолог-терапевт">врач-стоматолог-терапевт</option>
+                <option value="врач-стоматолог детский">врач-стоматолог детский</option>
+                <option value="врач-фтизиатр">врач-фтизиатр</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="name">ФИО врача:</label>
+            <input type="text" id="name" required>
+                
+        </div>
+        
+        
+         <div class="form-group">
+            <label for="date_record">Дата и время приема:</label>
+            <input type="datetime-local" id="date_record" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="record">Статус:</label>
+            <select id="record" required>
+                <option value="false">Занято</option>
+                <option value="true">Свободно</option>
+            </select>
+        </div>
+
+
+        <button type="submit">Отправить</button>
+    </form>
+    
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('SlotsForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Получаем значения из формы
+            const formData = {
+                speciality: document.getElementById('speciality').value,
+                name: document.getElementById('name').value,
+                date_record: document.getElementById('date_record').value,
+                record: document.getElementById('record').value === 'true'
+            };
+            
+            try {
+                const response = await fetch('/slots', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Ошибка сервера');
+                }
+                
+                const result = await response.json();
+                console.log('Успешно:', result);
+                alert('Данные отправлены!');
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при отправке');
+            }
+        });
+    </script>
+</body>
+</html>
