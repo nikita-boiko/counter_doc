@@ -41,7 +41,7 @@ async def read_data(request: Request):
     :type request: Request
     '''
 
-    return templates.TemplateResponse('admin.html', {'request' : request})
+    return templates.TemplateResponse('index.html', {'request' : request})
 
 # получаем страницу для специалистов
 @app.get('/specialist')
