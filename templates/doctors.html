@@ -1,80 +1,204 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8""")/>>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table {{ speciality }}</title>
+    <title>Таблица: {{ speciality }}</title>
+    <style>
+        body {
+            /* Базовый цвет фона и текста изменен на светлый */
+            background-color: #e0f2f1; /* Светлый мятный оттенок */
+            color: #1a472a; /* Темный цвет текста для контраста */
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            
+            /* Используем ваше изображение как фон */
+            background-image: url('/static/images/fon.jpg');
+            background-size: cover; /* Растягивает на весь экран */
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        /* Навигация */
+        .nav-container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            justify-content: flex-start;
+        }
+
+        .btn-nav {
+            background: #1a472a; /* Темная кнопка навигации */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            background: #009688; /* Мятный цвет при наведении */
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        h1 {
+            text-align: center;
+            text-shadow: none; /* Убрал тень */
+            margin-bottom: 30px;
+            color: #1a472a; /* Темный цвет заголовка */
+        }
+
+        /* Стили таблиц */
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: rgba(255, 255, 255, 0.95); /* Светлый полупрозрачный фон таблицы */
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(26, 71, 42, 0.1);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(26, 71, 42, 0.05); /* Темная тонкая линия */
+        }
+
+        th {
+            background-color: rgba(0, 150, 136, 0.2); /* Светлый мятный фон заголовков */
+            color: #009688; /* Цвет текста */
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(26, 71, 42, 0.05); /* Легкое затемнение при наведении */
+            transition: background 0.3s;
+        }
+
+        .status-free {
+            color: #009688; /* Мятный цвет для "Свободно" */
+            font-weight: bold;
+        }
+        .status-busy {
+            color: #e74c3c; /* Красный цвет для "Занято" */
+            opacity: 0.8;
+        }
+
+        .stats-table {
+            max-width: 600px;
+            background: rgba(0, 150, 136, 0.1); /* Мятный фон для статистики */
+            border: 1px solid rgba(0, 150, 136, 0.3);
+        }
+
+        .stats-table td {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            color: #009688;
+        }
+
+        .stats-table th {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <!-- Получаем объекты из БД -->
+
+    <!-- Кнопки управления -->
+    <div class="nav-container">
+        <button onclick="history.back()" class="btn-nav">← Назад</button>
+        <a href="/" class="btn-nav">🏠 Главное меню</a>
+    </div>
+
     <h1>Свободные талоны: {{speciality}}</h1>
+
     <table id="doctorTable">
         <thead>
             <tr>
                 <th>Специальность</th>
                 <th>ФИО</th>
-                <th>Дата и время приема</th>
-                <th>Свободно</th>
+                <th>Дата и время</th>
+                <th>Статус</th>
                 <th>Пациент</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Запускаем цикл который выдает отдельные столбцы таблицы -->
             {% for row in data %}
             <tr>
                 <td>{{row.speciality}}</td>
                 <td>{{row.name}}</td>
                 <td>{{row.date_record}}</td>
-                <td>{{row.record}}</td>
-                <td>{{row.patient}}</td>
+                <td class="{{ 'status-free' if row.record|lower == 'true' else 'status-busy' }}">
+                    {{ 'Свободно' if row.record|lower == 'true' else 'Занято' }}
+                </td>
+                <td>{{row.patient if row.patient else '-'}}</td>
             </tr>
             {% endfor %}
-             
         </tbody>
     </table>
-    <p>
-  
-    </p>
 
-   <table>
-        <tr>
-            <th>Всего талонов</th>
-            <th>Свободных талонов</th>
-            <th>Процент свободных талонов</th>
-        </tr>
-        <tr class="total-row">
-                <td id="totalSlots"></td>
-                <td id="totalFree"></td>
-                <td id="percentFree"></td>
+    <table class="stats-table">
+        <thead>
+            <tr>
+                <th>Всего талонов</th>
+                <th>Свободно</th>
+                <th>Доступность (%)</th>
             </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="totalSlots">-</td>
+                <td id="totalFree">-</td>
+                <td id="percentFree">-</td>
+            </tr>
+        </tbody>
     </table>
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const table = document.getElementById('doctorTable');
-            const rows = table.querySelectorAll('tbody tr:not(.total-row)');
+            const rows = table.querySelectorAll('tbody tr');
             
             let totalFree = 0;
+            let totalSlots = rows.length;
             
             rows.forEach(row => {
-                const cells = row.cells;
-                
-                const isFree = cells[3].textContent.toLowerCase() === 'true';
-                if (isFree) {
+                const statusText = row.cells[3].textContent.trim().toLowerCase();
+                if (statusText === 'свободно') {
                     totalFree++;
                 }
             });
-            const totalSlots = table.rows.length - 1;
-            const percentFree = totalSlots > 0 ? (totalFree / totalSlots * 100).toFixed(1) : 0;
+
+            const percent = totalSlots > 0 ? (totalFree / totalSlots * 100).toFixed(1) : 0;
             
             document.getElementById('totalSlots').textContent = totalSlots;
             document.getElementById('totalFree').textContent = totalFree;
-            document.getElementById('percentFree').textContent = percentFree + '%';
+            document.getElementById('percentFree').textContent = percent + '%';
         });
     </script>
 
-    
-    </div>
 </body>
 </html>
+
+

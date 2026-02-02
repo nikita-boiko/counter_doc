@@ -10,6 +10,9 @@ from sqlalchemy import and_
 # создаем приложение
 app = FastAPI()
 
+#  путь для передачи статических файлов
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 # настриваем каталог шаблонов
 templates = Jinja2Templates(directory="templates")

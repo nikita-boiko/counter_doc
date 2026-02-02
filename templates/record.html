@@ -1,51 +1,148 @@
-<div class="record">
-    <h1>Запись на прием к врачу</h1>
-</div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выбор специалиста</title>
+    <style>
+        body {
+            /* Базовый цвет фона и текста изменен на светлый */
+            background-color: #e0f2f1; /* Светлый мятный оттенок */
+            color: #1a472a; /* Темный цвет текста для контраста */
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            
+            /* Используем ваше изображение как фон */
+            background-image: url('/static/images/fon.jpg'); 
+            background-size: cover; /* Растягивает на весь экран */
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        /* Убираем глобальное затемнение, так как фон сам по себе светлый */
+        body::before { display: none; }
 
-<div class="record">
-    <h1>Выберите специалиста:</h1>
-        <div class="card">
-            <div>
-                <a href="record/врач-терапевт участковый">врач-терапевт участковый</a>
-            </div>
-            <div>
-                <a href="record/врач-педиатр участковый">врач-педиатр участковый</a>
-            </div>
-            <div>
-                <a href="record/врач общей практики (семейный врач)">врач общей практики (семейный врач)</a>
-            </div>
-             <div>
-                <a href="record/врач-оториноларинголог">врач-оториноларинголог</a>
-            </div>
-             <div>
-                <a href="record/врач-офтальмолог">врач-офтальмолог</a>
-            </div>
-             <div>
-                <a href="record/врач-акушер-гинеколог">врач-акушер-гинеколог</a>
-            </div>
-             <div>
-                <a href="record/врач-хирург">врач-хирург</a>
-            </div>
-             <div>
-                <a href="record/врач - детский хирург">врач - детский хирург</a>
-            </div>
-             <div>
-                <a href="record/врач-психиатр-нарколог">врач-психиатр-нарколог</a>
-            </div>
-             <div>
-                <a href="record/врач-психиатр детский">врач-психиатр детский</a>
-            </div>
-             <div>
-                <a href="record/врач-стоматолог">врач-стоматолог</a>
-            </div>
-             <div>
-                <a href="record/врач-стоматолог-терапевт">врач-стоматолог-терапевт</a>
-            </div>
-            <div>
-                <a href="record/врач-стоматолог детский">врач-стоматолог детский</a>
-            </div>
-            <div>
-                <a href="record/врач-фтизиатр">врач-фтизиатр</a>
-            </div>
 
-</div>
+        /* Одиночная кнопка меню сверху */
+        .nav-container {
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 30px;
+        }
+
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            /* Цвет кнопки изменен на темно-зеленый */
+            background: #1a472a; 
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-home:hover {
+            background: #009688; /* Мятный цвет при наведении */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Остальные стили */
+        .container { 
+            width: 100%; 
+            max-width: 1100px; 
+            text-align: center; 
+            /* Светлый полупрозрачный фон для читаемости заголовков */
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .header-box { margin-bottom: 40px; }
+        h1 { 
+            font-size: 2.2rem; 
+            margin: 0; 
+            text-shadow: none; /* Убрал тень */
+            color: #1a472a; /* Темный цвет */
+        }
+        .subtitle { opacity: 0.8; font-size: 1.1rem; color: #1a472a; }
+
+        .specialist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .spec-card {
+            background: rgba(255, 255, 255, 0.9); /* Светлый фон карточек */
+            border: 1px solid rgba(26, 71, 42, 0.1);
+            border-radius: 18px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .spec-card a {
+            color: #1a472a; /* Темный текст */
+            text-decoration: none;
+            display: block;
+            padding: 30px 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .spec-card:hover {
+            background: #009688; /* Мятный цвет при наведении */
+            transform: scale(1.03);
+            border-color: transparent;
+        }
+
+        .spec-card:hover a { color: white; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <!-- Кнопка только для возврата домой -->
+    <div class="nav-container">
+        <a href="/" class="btn-home">🏠 Главное меню</a>
+    </div>
+
+    <div class="container">
+        <div class="header-box">
+            <h1>Запись на прием</h1>
+            <p class="subtitle">Выберите нужного специалиста:</p>
+        </div>
+
+        <div class="specialist-grid">
+            <div class="spec-card"><a href="record/врач-терапевт участковый">Врач-терапевт участковый</a></div>
+            <div class="spec-card"><a href="record/врач-педиатр участковый">Врач-педиатр участковый</a></div>
+            <div class="spec-card"><a href="record/врач общей практики (семейный врач)">Врач общей практики</a></div>
+            <div class="spec-card"><a href="record/врач-оториноларинголог">Врач-оториноларинголог</a></div>
+            <div class="spec-card"><a href="record/врач-офтальмолог">Врач-офтальмолог</a></div>
+            <div class="spec-card"><a href="record/врач-акушер-гинеколог">Врач-акушер-гинеколог</a></div>
+            <div class="spec-card"><a href="record/врач-хирург">Врач-хирург</a></div>
+            <div class="spec-card"><a href="record/врач - детский хирург">Врач — детский хирург</a></div>
+            <div class="spec-card"><a href="record/врач-психиатр-нарколог">Врач-психиатр-нарколог</a></div>
+            <div class="spec-card"><a href="record/врач-психиатр детский">Врач-психиатр детский</a></div>
+            <div class="spec-card"><a href="record/врач-стоматолог">Врач-стоматолог</a></div>
+            <div class="spec-card"><a href="record/врач-стоматолог-терапевт">Врач-стоматолог-терапевт</a></div>
+            <div class="spec-card"><a href="record/врач-стоматолог детский">Врач-стоматолог детский</a></div>
+            <div class="spec-card"><a href="record/врач-фтизиатр">Врач-фтизиатр</a></div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+

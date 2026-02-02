@@ -1,51 +1,175 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <style>
-        td {padding:5px;}
-        button{margin: 5px;}
-    </style>
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8""")/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table {{ speciality }}</title>
+    <title>Запись: {{ speciality }}</title>
+    <style>
+        body {
+            /* Базовый цвет фона и текста изменен на светлый */
+            background-color: #e0f2f1; /* Светлый мятный оттенок */
+            color: #1a472a; /* Темный цвет текста для контраста */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+
+            /* УСТАНАВЛИВАЕМ ФОН */
+            background-image: url('/static/images/fon.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        /* Контейнер навигации */
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
+            justify-content: flex-start;
+        }
+
+        .btn-nav {
+            background: #1a472a; /* Темная кнопка навигации */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            background: #009688; /* Мятный цвет при наведении */
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        #recordForm {
+            /* Светлый полупрозрачный фон для формы */
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); /* Легкая тень */
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid rgba(26, 71, 42, 0.1);
+            box-sizing: border-box;
+            color: #1a472a; /* Темный текст в форме */
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #009688; /* Акцентный мятный цвет */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            color: #1a472a;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(26, 71, 42, 0.2);
+            background: rgba(26, 71, 42, 0.05); /* Очень светлый фон полей */
+            color: #1a472a; /* Темный текст в полях */
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        select option { background: #e0f2f1; color: #1a472a; } /* Цвет фона опций в списке */
+        select:focus, input:focus { border-color: #009688; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background-color: #009688; /* Мятный цвет кнопки */
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #1a472a; /* Темно-зеленый при наведении */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body>
+
+    <nav class="nav-buttons">
+        <button onclick="history.back()" class="btn-nav">← Назад</button>
+        <a href="/" class="btn-nav">🏠 Главное меню</a>
+    </nav>
+
     <form id="recordForm">
-    
-    <h1>Запись на прием: {{speciality}}</h1>
-    <table>
-    <tr>
-        <th>Записаться</th>
-    </tr>
-    </table>
-    <div class="form-group">
-        <label for="doctor">Выберите талон для записи:</label>
-        <select id="doctor"> 
-            {% for row in data %}
-                {% if row.record == true %}
-            <option value="{{row.name}}|{{row.date_record}}">{{row.name}} {{row.date_record}}</option>
-                {% endif %}
-            {% endfor %}
-        </select>
-    </div>
+        <h1>Запись на прием</h1>
+        
+        <div class="form-group">
+            <label for="doctor">Выберите свободный талон:</label>
+            <select id="doctor" required> 
+                <option value="" disabled selected>— Нажмите, чтобы выбрать —</option>
+                {% for row in data %}
+                    {% if row.record == true %}
+                        <option value="{{row.name}}|{{row.date_record}}">
+                            {{row.name}} — {{row.date_record}}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
 
-    <div class="form-group">    
-        <label for="record"></label>
-            <input type="hidden" id="record" value='false'>
-    </div>
+        <input type="hidden" id="record" value="false">
 
-
-    <div class="form-group">
+        <div class="form-group">
             <label for="patient">ФИО пациента:</label>
-            <input type="text" id="patient" required>
-    </div>
-    <button type="submit">Отправить</button>
+            <input type="text" id="patient" placeholder="Иванов Иван Иванович" required>
+        </div>
+
+        <button type="submit" class="btn-submit">Подтвердить запись</button>
     </form>
+
     <script>
-           document.getElementById('recordForm').addEventListener('submit', async function(e) {
+        document.getElementById('recordForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const selectedValue = document.getElementById('doctor').value;
+            if (!selectedValue) {
+                alert('Пожалуйста, выберите талон');
+                return;
+            }
+
             const [name, date_record] = selectedValue.split('|');
 
             const formData = {
@@ -58,22 +182,16 @@
             try {
                 const response = await fetch('/record', {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
                 
-                if (!response.ok) {
-                    throw new Error('Ошибка сервера');
-                }
+                if (!response.ok) throw new Error('Ошибка сервера');
                 
-                const result = await response.json();
-                console.log('Успешно:', result);
-                alert('Данные отправлены!');
+                alert('Вы успешно записаны!');
+                window.location.reload();
             } catch (error) {
-                console.error('Ошибка:', error);
-                alert('Произошла ошибка при отправке');
+                alert('Ошибка при отправке: ' + error.message);
             }
         });
     </script>

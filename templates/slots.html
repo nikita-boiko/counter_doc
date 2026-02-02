@@ -1,16 +1,167 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
- <title>Добавление талонов для записи</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление талонов</title>
+    <style>
+        /* Общие стили из нового макета */
+        body {
+            background-color: #e0f2f1; /* Светлый мятный оттенок */
+            color: #1a472a; /* Темный цвет текста для контраста */
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+
+            /* Используем ваше изображение как фон */
+            background-image: url('/static/images/fon.jpg');
+            background-size: cover; /* Растягивает на весь экран */
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        /* Контейнер для навигации */
+        .nav-container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            justify-content: flex-start;
+        }
+
+        /* Стиль кнопок навигации (адаптирован под новый стиль) */
+        .btn-nav, .btn-home {
+            background: #1a472a; /* Темная кнопка навигации на светлом фоне */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover, .btn-home:hover {
+            background: #009688; /* Мятный цвет при наведении */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Карточка формы (адаптирована под новый стиль) */
+        #SlotsForm {
+            background: rgba(255, 255, 255, 0.9); /* Светлый полупрозрачный фон */
+            backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); /* Менее темная тень */
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid rgba(26, 71, 42, 0.1);
+            box-sizing: border-box;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: #009688; /* Цвет заголовка */
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            color: #1a472a; /* Темный цвет текста */
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(26, 71, 42, 0.2); /* Светлая рамка */
+            background: rgba(255, 255, 255, 0.7); /* Светлый фон полей */
+            color: #1a472a; /* Темный цвет текста в полях */
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        /* Цвет текста placeholder */
+        input::placeholder {
+            color: #1a472a;
+            opacity: 0.5;
+        }
+
+        select option { background: #e0f2f1; color: #1a472a; } /* Фон опций */
+
+        select:focus, input:focus {
+            border-color: #009688; /* Цвет рамки при фокусе */
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 8px rgba(0, 150, 136, 0.3);
+        }
+
+        input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+            filter: none; /* Убираем инвертирование для светлого фона */
+            cursor: pointer;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #009688 0%, #00796b 100%); /* Мятный градиент */
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 150, 136, 0.4);
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Навигация -->
+    <div class="nav-container">
+        <button onclick="history.back()" class="btn-nav">← Назад</button>
+        <a href="/" class="btn-home">🏠 Главное меню</a>
+    </div>
+
     <form id="SlotsForm">
+        <h2>Генерация талона</h2>
+
         <div class="form-group">
-            <label for="speciality">Специальность:</label>
+            <label for="speciality">Специальность</label>
             <select id="speciality"> 
                 <option value="врач-терапевт участковый">врач-терапевт участковый</option>
                 <option value="врач-педиатр участковый">врач-педиатр участковый</option>
-                <option value="врач общей практики (семейный врач)">врач общей практики (семейный врач)</option>
+                <option value="врач общей практики (семейный врач)">врач общей практики</option>
                 <option value="врач-оториноларинголог">врач-оториноларинголог</option>
                 <option value="врач-офтальмолог">врач-офтальмолог</option>
                 <option value="врач-акушер-гинеколог">врач-акушер-гинеколог</option>
@@ -26,36 +177,30 @@
         </div>
 
         <div class="form-group">
-            <label for="name">ФИО врача:</label>
-            <input type="text" id="name" required>
-                
+            <label for="name">ФИО врача</label>
+            <input type="text" id="name" placeholder="Введите ФИО" required>
         </div>
         
-        
-         <div class="form-group">
-            <label for="date_record">Дата и время приема:</label>
+        <div class="form-group">
+            <label for="date_record">Дата и время приема</label>
             <input type="datetime-local" id="date_record" required>
         </div>
         
         <div class="form-group">
-            <label for="record">Статус:</label>
+            <label for="record">Начальный статус</label>
             <select id="record" required>
+                <option value="true" selected>Свободно</option>
                 <option value="false">Занято</option>
-                <option value="true">Свободно</option>
             </select>
         </div>
 
-
-        <button type="submit">Отправить</button>
+        <button type="submit" class="btn-submit">Создать талон</button>
     </form>
     
-    <div id="response"></div>
-
     <script>
         document.getElementById('SlotsForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Получаем значения из формы
             const formData = {
                 speciality: document.getElementById('speciality').value,
                 name: document.getElementById('name').value,
@@ -66,24 +211,22 @@
             try {
                 const response = await fetch('/slots', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
                 
-                if (!response.ok) {
-                    throw new Error('Ошибка сервера');
-                }
+                if (!response.ok) throw new Error('Ошибка сервера');
                 
-                const result = await response.json();
-                console.log('Успешно:', result);
-                alert('Данные отправлены!');
+                alert('Талон успешно добавлен!');
+                document.getElementById('name').value = ''; 
             } catch (error) {
-                console.error('Ошибка:', error);
-                alert('Произошла ошибка при отправке');
+                alert('Ошибка: ' + error.message);
             }
         });
     </script>
 </body>
 </html>
+
+
+
+

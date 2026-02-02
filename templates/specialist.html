@@ -1,11 +1,162 @@
-<div class="specialist">
-    <h1></h1>
-        <div class="card">
-            <div>
-                <a href="specialist/slots">Добавить талоны</a>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель специалиста</title>
+    <style>
+        body {
+            /* Базовый цвет фона и текста изменен на светлый */
+            background-color: #e0f2f1; /* Светлый мятный оттенок */
+            color: #1a472a; /* Темный цвет текста для контраста */
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+
+            /* Используем ваше изображение как фон */
+            background-image: url('/static/images/fon.jpg');
+            background-size: cover; /* Растягивает на весь экран */
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        /* Навигация сверху */
+        .nav-container {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .btn-home {
+            /* Темная кнопка навигации на светлом фоне */
+            background: #1a472a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-home:hover {
+            background: #009688; /* Мятный цвет при наведении */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .specialist {
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            text-shadow: none; /* Убрал тень */
+            color: #1a472a; /* Темный цвет */
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .admin-card {
+            /* Светлый полупрозрачный фон карточек */
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(26, 71, 42, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .admin-card a {
+            display: block;
+            padding: 60px 40px;
+            color: #1a472a; /* Темный цвет текста */
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .admin-card:hover {
+            background: #009688; /* Мятный цвет при наведении */
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border-color: transparent;
+        }
+
+        .admin-card:hover a {
+            color: white; /* Белый текст при наведении */
+        }
+
+        .admin-card a span {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: normal;
+            margin-top: 10px;
+            opacity: 0.8;
+            color: #1a472a; /* Темный текст для описания */
+        }
+
+        .admin-card:hover a span {
+            color: white; /* Белый текст описания при наведении */
+        }
+
+        @media (max-width: 600px) {
+            .nav-container { justify-content: center; }
+            h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Кнопка только для возврата домой -->
+    <div class="nav-container">
+        <a href="/" class="btn-home">🏠 Главное меню</a>
+    </div>
+
+    <div class="specialist">
+        <h1>Панель управления</h1>
+        
+        <div class="card-container">
+            <div class="admin-card">
+                <a href="specialist/slots">
+                    Добавить талоны
+                    <span>Создание новых слотов для записи</span>
+                </a>
             </div>
-            <div>
-                <a href="analytics">Аналитика</a>
+            
+            <div class="admin-card">
+                <a href="analytics">
+                    Аналитика
+                    <span>Статистика и отчеты по врачам</span>
+                </a>
             </div>
-</div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+
        

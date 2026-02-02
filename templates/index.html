@@ -1,15 +1,205 @@
-<div class="admin">
-    <h1>Главное меню</h1>
-</div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Запись к врачу</title>
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+    <style>
+        /* Основные настройки */
+        body {
+            background-color: #e0f2f1; /* Мятный цвет, сочетается с фоном */
+            color: #1a472a; /* Темный цвет текста для контраста */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            
+            /* ФОНОВОЕ ИЗОБРАЖЕНИЕ НА ВСЮ СТРАНИЦУ */
+            background-image: url('/static/images/fon.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover; /* Растягивает изображение на весь экран */
+        }
 
-<div class="admin">
-    <h1></h1>
-        <div class="card">
-            <div>
-                <a href="specialist">Для специалистов</a>
+        .main-wrapper {
+             width: 100%;
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             max-width: 800px;
+        }
+
+        /* Шапка */
+        .header-container {
+            display: flex;       
+            align-items: center; 
+            justify-content: center;
+            gap: 20px;
+            padding: 20px 0;
+            width: 100%;
+        }
+
+        .logo {
+            width: 80px;        
+            height: auto;
+            filter: none; /* Убрал белую тень, так как фон светлый */
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin: 0;
+            color: #1a472a; /* Темный цвет заголовка */
+            text-shadow: none;
+        }
+
+        /* Контейнер для кнопок (Теперь без фоновой картинки врачей) */
+        .admin {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9); /* Светлый, полупрозрачный фон */
+            padding: 50px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 90%;
+            margin-bottom: 30px;
+            position: relative; 
+            overflow: hidden; 
+        }
+        
+        .admin::before { display: none; } /* Убираем слой затемнения */
+        
+        .welcome-text {
+            color: #1a472a; /* Темный текст */
+        }
+
+        /* Информационный блок */
+        .info-section {
+            background: rgba(255, 255, 255, 0.9); /* Светлый фон */
+            border: 1px solid rgba(26, 71, 42, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            text-align: left;
+            line-height: 1.6;
+            color: #1a472a; /* Темный текст */
+        }
+        
+        /* Стили для изображения больницы внутри инфо-секции */
+        .info-image {
+            width: 100%;
+            height: auto;
+            border-radius: 15px; 
+            margin-bottom: 20px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .info-section h3 {
+            color: #009688; /* Цвет заголовка */
+            margin-top: 0;
+            border-bottom: 1px solid rgba(0, 150, 136, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .card-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Стили ссылок-кнопок */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #009688; /* Мятный цвет кнопок */
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            background-color: #1a472a; /* Темно-зеленый при наведении */
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .btn-alt {
+            background-color: transparent;
+            border: 2px solid #1a472a; /* Темная рамка */
+            color: #1a472a; /* Темный текст */
+        }
+        
+        .btn-alt:hover {
+             background-color: #1a472a;
+             color: white;
+        }
+
+        @media (max-width: 600px) {
+            .info-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <header class="header-container">
+            <img src="/static/images/logo.png" alt="Логотип сайта" class="logo">
+            <h1>МедЗапись</h1>
+        </header>
+
+        <div class="admin">
+            <p class="welcome-text">Мы рады Вас приветствовать!</p>
+            
+            <div class="card-container">
+                <a href="specialist" class="btn btn-alt">Для специалистов</a>
+                <a href="record" class="btn">Для пациентов</a>
             </div>
-            <div>
-                <a href="record">Для пациентов</a>
+        </div>
+
+        <!-- Блок информации о клинике -->
+        <div class="info-section">
+            <!-- Изображение клиники -->
+            <img src="/static/images/hosp.avif" alt="Здание клиники МедЗапись" class="info-image">
+            
+            <h3>О нашей клинике</h3>
+            <p>«МедЗапись» — это современный многопрофильный медицинский центр. Мы обеспечиваем качественную медицинскую помощь, используя передовое оборудование и опыт лучших специалистов.</p>
+            
+            <div class="info-grid">
+                <div>
+                    <strong>📍 Адрес:</strong><br>
+                    ул. Здоровья, д. 10, г. Здоровья
+                </div>
+                <div>
+                    <strong>📞 Телефон:</strong><br>
+                    +7 (800) 555-35-35
+                </div>
+                <div>
+                    <strong>⏰ Режим работы:</strong><br>
+                    Пн-Пт: 08:00 — 20:00<br>
+                    Сб-Вс: 09:00 — 16:00
+                </div>
+                <div>
+                    <strong>📧 Почта:</strong><br>
+                    info@med-record.ru
+                </div>
             </div>
-</div>
-        <h1>Мы рады Вас приветствовать!</h1>
+        </div>
+    </div>
+</body>
+</html>

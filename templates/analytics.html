@@ -1,51 +1,170 @@
-<div class="analytics">
-    <h1>Аналитика записи на прием по врачам-специалистам</h1>
-</div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Аналитика записи</title>
+    <style>
+        /* Общие стили страницы */
+        body {
+            /* Базовый цвет фона и текста изменен на светлый */
+            background-color: #e0f2f1; /* Светлый мятный оттенок */
+            color: #1a472a; /* Темный цвет текста для контраста */
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            
+            /* Используем ваше изображение как фон */
+            background-image: url('/static/images/fon.jpg');
+            background-size: cover; /* Растягивает на весь экран */
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
 
-<div class="analytics">
-    <h1>Свободные талоны к врачам-специалистам</h1>
-        <div class="card">
-            <div>
-                <a href="analytics/врач-терапевт участковый">врач-терапевт участковый</a>
-            </div>
-            <div>
-                <a href="analytics/врач-педиатр участковый">врач-педиатр участковый</a>
-            </div>
-            <div>
-                <a href="analytics/врач общей практики (семейный врач)">врач общей практики (семейный врач)</a>
-            </div>
-             <div>
-                <a href="analytics/врач-оториноларинголог">врач-оториноларинголог</a>
-            </div>
-             <div>
-                <a href="analytics/врач-офтальмолог">врач-офтальмолог</a>
-            </div>
-             <div>
-                <a href="analytics/врач-акушер-гинеколог">врач-акушер-гинеколог</a>
-            </div>
-             <div>
-                <a href="analytics/врач-хирург">врач-хирург</a>
-            </div>
-             <div>
-                <a href="analytics/врач - детский хирург">врач - детский хирург</a>
-            </div>
-             <div>
-                <a href="analytics/врач-психиатр-нарколог">врач-психиатр-нарколог</a>
-            </div>
-             <div>
-                <a href="analytics/врач-психиатр детский">врач-психиатр детский</a>
-            </div>
-             <div>
-                <a href="analytics/врач-стоматолог">врач-стоматолог</a>
-            </div>
-             <div>
-                <a href="analytics/врач-стоматолог-терапевт">врач-стоматолог-терапевт</a>
-            </div>
-            <div>
-                <a href="analytics/врач-стоматолог детский">врач-стоматолог детский</a>
-            </div>
-            <div>
-                <a href="analytics/врач-фтизиатр">врач-фтизиатр</a>
-            </div>
+        /* Контейнер для навигации */
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            justify-content: flex-start;
+        }
 
-</div>
+        /* Общий стиль кнопок навигации */
+        .btn-nav {
+            display: inline-flex;
+            align-items: center;
+            background: #1a472a; /* Темная кнопка навигации */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-nav:hover {
+            background: #009688; /* Мятный цвет при наведении */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .analytics {
+            width: 100%;
+            max-width: 1200px;
+            text-align: center;
+            /* Светлый полупрозрачный фон для контейнера */
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            text-shadow: none; /* Убрал тень */
+            color: #1a472a; /* Темный цвет */
+        }
+
+        /* Сетка для карточек */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .doctor-card {
+            background: rgba(26, 71, 42, 0.1); /* Очень светлый фон карточки */
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(26, 71, 42, 0.1);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            display: flex;
+        }
+
+        .doctor-card a {
+            color: #1a472a; /* Темный текст */
+            text-decoration: none;
+            padding: 25px 20px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .doctor-card:hover {
+            background: #009688; /* Мятный цвет при наведении */
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: transparent;
+        }
+
+        .doctor-card:hover a {
+            color: white; /* Белый текст при наведении */
+            font-weight: bold;
+        }
+
+        .section-title {
+            margin-top: 30px;
+            opacity: 0.9;
+            font-weight: 300;
+            border-bottom: 1px solid rgba(26, 71, 42, 0.2);
+            padding-bottom: 10px;
+            display: inline-block;
+            color: #1a472a;
+        }
+
+        @media (max-width: 600px) {
+            .nav-container { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Панель навигации -->
+    <div class="nav-container">
+        <button onclick="history.back()" class="btn-nav">← Назад</button>
+        <a href="/" class="btn-nav">🏠 Главное меню</a>
+    </div>
+
+    <div class="analytics">
+        <h1>Аналитика записи на прием</h1>
+        
+        <h2 class="section-title">Свободные талоны к врачам-специалистам</h2>
+
+        <div class="card-grid">
+            <div class="doctor-card"><a href="analytics/врач-терапевт участковый">Врач-терапевт участковый</a></div>
+            <div class="doctor-card"><a href="analytics/врач-педиатр участковый">Врач-педиатр участковый</a></div>
+            <div class="doctor-card"><a href="analytics/врач общей практики (семейный врач)">Врач общей практики</a></div>
+            <div class="doctor-card"><a href="analytics/врач-оториноларинголог">Врач-оториноларинголог</a></div>
+            <div class="doctor-card"><a href="analytics/врач-офтальмолог">Врач-офтальмолог</a></div>
+            <div class="doctor-card"><a href="analytics/врач-акушер-гинеколог">Врач-акушер-гинеколог</a></div>
+            <div class="doctor-card"><a href="analytics/врач-хирург">Врач-хирург</a></div>
+            <div class="doctor-card"><a href="analytics/врач - детский хирург">Врач - детский хирург</a></div>
+            <div class="doctor-card"><a href="analytics/врач-психиатр-нарколог">Врач-психиатр-нарколог</a></div>
+            <div class="doctor-card"><a href="analytics/врач-психиатр детский">Врач-психиатр детский</a></div>
+            <div class="doctor-card"><a href="analytics/врач-стоматолог">Врач-стоматолог</a></div>
+            <div class="doctor-card"><a href="analytics/врач-стоматолог-терапевт">Врач-стоматолог-терапевт</a></div>
+            <div class="doctor-card"><a href="analytics/врач-стоматолог детский">Врач-стоматолог детский</a></div>
+            <div class="doctor-card"><a href="analytics/врач-фтизиатр">Врач-фтизиатр</a></div>
+        </div>
+    </div>
+
+</body>
+</html>
