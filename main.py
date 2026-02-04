@@ -207,7 +207,7 @@ def edit_status(data  = Body(), db: Session = Depends(get_db)):
     db.refresh(db_record)
     return data
 
-# получаем страницу для авторизации
+# получаем страницу для авторизации специалистов
 @app.get('/login_spec')
 async def get_login_html(request: Request):
     '''
@@ -221,6 +221,8 @@ async def get_login_html(request: Request):
 
     return templates.TemplateResponse("login_spec.html", {'request' : request})
 
+
+# получаем страницу для авторизации пациентов
 @app.get('/login_patient')
 async def get_login_html(request: Request):
     '''
@@ -234,14 +236,14 @@ async def get_login_html(request: Request):
 
     return templates.TemplateResponse("login_patient.html", {'request' : request})
 
-# получаем страницу для регистрации
+# получаем страницу для регистрации специалистов
 
 @app.get('/registration_spec')
 async def get_registration_html(request: Request):
     '''
     We receive a page for registration
 
-    Docstring for get_login_html
+    Docstring for get_registration_html
     
     :param request: Description
     :type request: Request
@@ -249,12 +251,14 @@ async def get_registration_html(request: Request):
 
     return templates.TemplateResponse("registration_spec.html", {'request' : request})
 
+# получаем страницу для регистрации пациентов
+
 @app.get('/registration_patient')
 async def get_registration_html(request: Request):
     '''
     We receive a page for registration
 
-    Docstring for get_login_html
+    Docstring for get_registration_html
     
     :param request: Description
     :type request: Request
@@ -263,9 +267,21 @@ async def get_registration_html(request: Request):
     return templates.TemplateResponse("registration_patient.html", {'request' : request})
 
 
-
+# отправляем данные зарегистрированного пользователя на БД
 @app.post('/registration_spec')
 async def registration_spec(data = Body(), db: Session = Depends(get_db)):
+
+    '''
+    We send the created userdata to the database
+
+    Docstring for registration_spec
+    
+    :param data: Description
+    :param db: Description
+    :type db: Session
+    :return: Description
+    :rtype: Specialists
+    '''
  
 
 
@@ -309,8 +325,22 @@ async def registration_spec(data = Body(), db: Session = Depends(get_db)):
     return {"status": "ok"}
 
 
+
+# проверяем полученные данные пользователя при авторизации 
 @app.post('/login_spec')
 async def login_spec(data: dict = Body(), db: Session = Depends(get_db)):
+
+    '''
+    We check the userdata to the database
+
+    Docstring for login_spec
+    
+    :param data: Description
+    :param db: Description
+    :type db: Session
+    :return: Description
+    :rtype: Specialists
+    '''
  
     username = data.get('username')
     password = data.get('password')
@@ -325,9 +355,22 @@ async def login_spec(data: dict = Body(), db: Session = Depends(get_db)):
 
     return {"message": "Успешный вход", "user": username}
 
+
+# отправляем данные зарегистрированного пользователя на БД
 @app.post('/registration_patient')
 async def registration_patient(data = Body(), db: Session = Depends(get_db)):
  
+    '''
+    We send the created userdata to the database
+
+    Docstring for registration_patient
+    
+    :param data: Description
+    :param db: Description
+    :type db: Session
+    :return: Description
+    :rtype: Patients
+    '''
 
 
     patients = Patients(
@@ -359,8 +402,22 @@ async def registration_patient(data = Body(), db: Session = Depends(get_db)):
 
     return {"status": "ok"}
 
+
+# проверяем полученные данные пользователя при авторизации 
 @app.post('/login_patient')
-async def login_spec(data: dict = Body(), db: Session = Depends(get_db)):
+async def login_patient(data: dict = Body(), db: Session = Depends(get_db)):
+
+    '''
+    We check the userdata to the database
+
+    Docstring for login_patient
+    
+    :param data: Description
+    :param db: Description
+    :type db: Session
+    :return: Description
+    :rtype: Patients
+    '''
  
     username = data.get('username')
     password = data.get('password')
