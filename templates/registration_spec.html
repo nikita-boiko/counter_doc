@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация Специалиста — МедЦентр</title>
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+    <style>
+        body {
+            background-color: #e0f2f1;
+            color: #1a472a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: url('/static/images/fon.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .reg-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 40px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        h2 { color: #1a472a; margin-bottom: 5px; font-size: 1.8rem; }
+        p.subtitle { color: #009688; margin-bottom: 25px; font-weight: bold; font-size: 0.9rem; }
+
+        .form-group { text-align: left; margin-bottom: 12px; }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 5px; 
+            font-size: 0.85rem; 
+            font-weight: bold; 
+            opacity: 0.8;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(26, 71, 42, 0.2);
+            background: white;
+            color: #1a472a;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus { border-color: #009688; box-shadow: 0 0 5px rgba(0, 150, 136, 0.2); }
+
+        .btn-reg {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 50px;
+            background-color: #009688;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn-reg:hover { background-color: #1a472a; transform: translateY(-2px); }
+
+        .back-link {
+            margin-top: 15px;
+            display: inline-block;
+            color: #1a472a;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+        .back-link:hover { opacity: 1; text-decoration: underline; }
+
+        @media (max-width: 480px) {
+            .form-grid { grid-template-columns: 1fr; gap: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="reg-card">
+    <h2>Регистрация</h2>
+    <p class="subtitle">Личный кабинет специалиста</p>
+    
+    <form id="regForm">
+        <!-- Скрытое поле роли, чтобы сервер понимал, что это специалист -->
+        <input type="hidden" name="role" value="specialist">
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="first_name">Имя</label>
+                <input type="text" id="first_name" name="first_name" placeholder="Иван" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Фамилия</label>
+                <input type="text" id="last_name" name="last_name" placeholder="Иванов" required>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="gender">Пол</label>
+                <select id="gender" name="gender" required>
+                    <option value="" disabled selected hidden>Выбрать...</option>
+                    <option value="male">Мужской</option>
+                    <option value="female">Женский</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="specCode" style="color: #009688;">Код доступа *</label>
+                <input type="text" id="speccode" name="speccode" placeholder="Служебный код" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="username">Логин</label>
+            <input type="text" id="username" name="username" placeholder="ivan_doc" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Электронная почта</label>
+            <input type="email" id="email" name="email" placeholder="ivan@medcenter.ru" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Рабочий телефон</label>
+            <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn-reg">Зарегистрироваться</button>
+    </form>
+    
+    <a href="/login_spec" class="back-link">Уже есть профиль? Войти</a>
+</div>
+
+<script>
+    document.getElementById('regForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch('/registration_spec', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(`Регистрация прошла успешно! Добро пожаловать, ${data.first_name}.`);
+                window.location.href = '/login_spec';
+            } else {
+                const errorMessage = typeof result.detail === 'string' 
+                                     ? result.detail 
+                                     : JSON.stringify(result.detail);
+                alert(`Ошибка: ${errorMessage}`);
+            }
+        } catch (error) {
+            console.error('Ошибка сети:', error);
+            alert('Ошибка: Не удалось связаться с сервером');
+        }
+    });
+</script>
+
+</body>
+</html>
+
+

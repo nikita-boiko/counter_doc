@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+    <style>
+        /* Основные настройки, скопированные с главной */
+        body {
+            background-color: #e0f2f1; /* Мятный цвет */
+            color: #1a472a; /* Темный текст */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            
+            /* Фоновое изображение как на главной */
+            background-image: url('/static/images/fon.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+
+        /* Карточка входа в стиле .admin с главной страницы */
+        .login-card {
+            background: rgba(255, 255, 255, 0.9); /* Светлый, полупрозрачный фон */
+            padding: 50px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: none; /* Убираем рамку, заменяем тенью */
+        }
+
+        h2 { 
+            color: #1a472a; 
+            margin-bottom: 30px; 
+            font-size: 2rem;
+        }
+
+        .form-group { 
+            text-align: left; 
+            margin-bottom: 20px; 
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-size: 0.9rem; 
+            color: #1a472a;
+            font-weight: bold;
+        }
+
+        /* Инпуты в стиле формы (адаптировано под светлый фон) */
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(26, 71, 42, 0.2);
+            background: white;
+            color: #1a472a;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { 
+            border-color: #009688; 
+            box-shadow: 0 0 5px rgba(0, 150, 136, 0.3);
+        }
+
+        /* Кнопка в стиле .btn (мятная) */
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 50px; /* Скругление как у кнопок на главной */
+            background-color: #009688; 
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top: 10px;
+        }
+
+        .btn-login:hover { 
+            background-color: #1a472a; 
+            transform: translateY(-3px);
+        }
+
+        /* Ссылка возврата в стиле .btn-alt или просто текста */
+        .back-link {
+            margin-top: 25px;
+            display: inline-block;
+            color: #1a472a;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-bottom: 1px solid transparent;
+            transition: 0.3s;
+        }
+
+        .back-link:hover { 
+            border-bottom-color: #1a472a;
+        }
+
+        /* Добавим логотип сверху для полного соответствия */
+        .logo-small {
+            width: 60px;
+            margin-bottom: 15px;
+        }
+
+          .btn-reg {
+            display: inline-block;
+            width: 100%; /* Чтобы была такой же ширины, как кнопка входа */
+            padding: 12px 0;
+            margin-bottom: 10px;
+            background-color: transparent;
+            border: 2px solid #1a472a; /* Темная рамка */
+            color: #1a472a; /* Темный текст */
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .btn-reg:hover {
+            background-color: #1a472a;
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+        <div class="login-card">
+        <img src="/static/images/logo.png" alt="Logo" class="logo-small">
+        <h2>Вход в систему</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Логин</label>
+                <input type="text" id="username" name='username' placeholder="admin" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name='password' placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-login">Войти</button>
+        </form>
+
+        <!-- Разделитель или текст "Нет аккаунта?" -->
+        <p style="margin: 20px 0 10px; color: #1a472a; font-size: 0.9rem; opacity: 0.8;">Ещё не зарегистрированы?</p>
+        
+        <!-- Кнопка регистрации в стиле btn-alt -->
+        <a href="/registration_spec" class="btn-reg">Создать аккаунт</a>
+
+        <br>
+        <a href="/" class="back-link">← Вернуться на главную</a>
+    </div>
+
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+        const response = await fetch('/login_spec', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: username, password: password })
+        });
+        if (response.ok) {
+            const result = await response.json();
+            alert('Успешный вход!');
+    
+            window.location.href = '/specialist'; 
+        } else {
+            alert('Неверный логин или пароль из базы данных');}
+        });
+    </script>
+</body>
+</html>

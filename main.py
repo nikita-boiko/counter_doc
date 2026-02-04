@@ -1,11 +1,12 @@
-from fastapi import FastAPI
-from db import *
+from fastapi import FastAPI, HTTPException, status
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Body, Depends
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
+from models import *
+from database import *
 
 # создаем приложение
 app = FastAPI()
@@ -24,14 +25,6 @@ app.mount('/static', StaticFiles(directory='templates', html=True), name='core')
 # создаем таблицы
 Base.metadata.create_all(bind=engine)
  
-# определяем зависимость
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 # настриваем отображение основной страницы
 @app.get("/", response_class=HTMLResponse, summary='Using the main page')
 async def read_data(request: Request):
@@ -214,3 +207,170 @@ def edit_status(data  = Body(), db: Session = Depends(get_db)):
     db.refresh(db_record)
     return data
 
+# получаем страницу для авторизации
+@app.get('/login_spec')
+async def get_login_html(request: Request):
+    '''
+    We receive a page for log in
+
+    Docstring for get_login_html
+    
+    :param request: Description
+    :type request: Request
+    '''
+
+    return templates.TemplateResponse("login_spec.html", {'request' : request})
+
+@app.get('/login_patient')
+async def get_login_html(request: Request):
+    '''
+    We receive a page for log in
+
+    Docstring for get_login_html
+    
+    :param request: Description
+    :type request: Request
+    '''
+
+    return templates.TemplateResponse("login_patient.html", {'request' : request})
+
+# получаем страницу для регистрации
+
+@app.get('/registration_spec')
+async def get_registration_html(request: Request):
+    '''
+    We receive a page for registration
+
+    Docstring for get_login_html
+    
+    :param request: Description
+    :type request: Request
+    '''
+
+    return templates.TemplateResponse("registration_spec.html", {'request' : request})
+
+@app.get('/registration_patient')
+async def get_registration_html(request: Request):
+    '''
+    We receive a page for registration
+
+    Docstring for get_login_html
+    
+    :param request: Description
+    :type request: Request
+    '''
+
+    return templates.TemplateResponse("registration_patient.html", {'request' : request})
+
+
+
+@app.post('/registration_spec')
+async def registration_spec(data = Body(), db: Session = Depends(get_db)):
+ 
+
+
+    specialists = Specialists(
+                    gender = data['gender'],   
+                      first_name = data['first_name'],  
+                        last_name = data['last_name'],
+                            speccode = data['speccode'], 
+                                username = data['username'],
+                                    email = data['email'],
+                                        phone = data['phone'], 
+                                            password = data['password']
+                        )
+    
+    
+    codes_exist = db.query(Code).filter(Code.code == specialists.speccode).first()
+    
+    specialists_exists = db.query(Specialists).filter(
+        (Specialists.email == specialists.email) | (Specialists.username == specialists.username) | (Specialists.speccode == specialists.speccode)
+    ).first()
+    if specialists_exists: 
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Пользователь с таким логином, почтой или кодом доступа уже зарегистрирован"
+        )
+
+    elif not codes_exist:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Код специалиста не найден"
+        )
+
+    else: 
+
+        db.add(specialists)   
+        db.commit()
+        db.refresh(specialists)
+        
+
+
+    return {"status": "ok"}
+
+
+@app.post('/login_spec')
+async def login_spec(data: dict = Body(), db: Session = Depends(get_db)):
+ 
+    username = data.get('username')
+    password = data.get('password')
+
+    specialists_exists = db.query(Specialists).filter(
+        (Specialists.username == username) & (Specialists.password == password)).first()
+    if not specialists_exists: 
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Неверный логин или пароль"
+        )
+
+    return {"message": "Успешный вход", "user": username}
+
+@app.post('/registration_patient')
+async def registration_patient(data = Body(), db: Session = Depends(get_db)):
+ 
+
+
+    patients = Patients(
+                    gender = data['gender'],   
+                      first_name = data['first_name'],  
+                        last_name = data['last_name'],
+                            username = data['username'],
+                                email = data['email'],
+                                    phone = data['phone'], 
+                                        password = data['password']
+                        )
+    
+    patients_exists = db.query(Patients).filter(
+        (Patients.email == patients.email) | (Patients.username == patients.username) 
+    ).first()
+    if patients_exists: 
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Пользователь с таким логином или почтой доступа уже зарегистрирован"
+        )
+
+    else: 
+
+        db.add(patients)   
+        db.commit()
+        db.refresh(patients)
+        
+
+
+    return {"status": "ok"}
+
+@app.post('/login_patient')
+async def login_spec(data: dict = Body(), db: Session = Depends(get_db)):
+ 
+    username = data.get('username')
+    password = data.get('password')
+
+    patient_exists = db.query(Patients).filter(
+        (Patients.username == username) & (Patients.password == password)).first()
+    if not patient_exists: 
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Неверный логин или пароль"
+        )
+
+    return {"message": "Успешный вход", "user": username}
