@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
-from database import Base 
+from database import Base
+
 
 class Doctors(Base):
     __tablename__ = "slots"
@@ -9,6 +10,7 @@ class Doctors(Base):
     date_record = Column(DateTime)
     record = Column(Boolean)
     patient = Column(String)
+
 
 class Patients(Base):
     __tablename__ = "patients"
@@ -21,6 +23,7 @@ class Patients(Base):
     phone = Column(String)
     password = Column(String)
 
+
 class Specialists(Base):
     __tablename__ = "specialists"
     id = Column(Integer, primary_key=True, index=True)
@@ -32,6 +35,7 @@ class Specialists(Base):
     email = Column(String, unique=True, index=True)
     phone = Column(String)
     password = Column(String)
+
 
 class Code(Base):
     __tablename__ = "code"
