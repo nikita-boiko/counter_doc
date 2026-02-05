@@ -296,8 +296,7 @@ async def registration_spec(data = Body(), db: Session = Depends(get_db)):
                                             password = data['password']
                         )
     
-    
-    codes_exist = db.query(Code).filter(Code.code == specialists.speccode).first()
+    speccode = '1111'
     
     specialists_exists = db.query(Specialists).filter(
         (Specialists.email == specialists.email) | (Specialists.username == specialists.username) | (Specialists.speccode == specialists.speccode)
@@ -308,7 +307,7 @@ async def registration_spec(data = Body(), db: Session = Depends(get_db)):
             detail="Пользователь с таким логином, почтой или кодом доступа уже зарегистрирован"
         )
 
-    elif not codes_exist:
+    elif specialists.speccode != speccode:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Код специалиста не найден"
@@ -421,7 +420,7 @@ async def login_patient(data: dict = Body(), db: Session = Depends(get_db)):
  
     username = data.get('username')
     password = data.get('password')
-
+    
     patient_exists = db.query(Patients).filter(
         (Patients.username == username) & (Patients.password == password)).first()
     if not patient_exists: 
@@ -430,4 +429,4 @@ async def login_patient(data: dict = Body(), db: Session = Depends(get_db)):
             detail="Неверный логин или пароль"
         )
 
-    return {"message": "Успешный вход", "user": username}
+    return {"message": "Успешный вход", "user": username} 

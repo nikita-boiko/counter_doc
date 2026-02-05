@@ -3,3 +3,4 @@ python-dotenv==1.2.1
 SQLAlchemy==2.0.34
 psycopg2-binary
 jinja2
+uvicorn
